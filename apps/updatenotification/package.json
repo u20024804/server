@@ -29,11 +29,12 @@
     "vue-select": "^2.4.0"
   },
   "devDependencies": {
+    "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
     "vue-loader": "^15.2.4",
     "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.11.1",
+    "webpack": "^4.11.1 ",
     "webpack-cli": "^3.0.3",
     "webpack-merge": "^4.1.2"
   }
