@@ -539,6 +539,7 @@ interface IServerContainer extends IContainer {
 
 	/**
 	 * @return \OCP\GlobalScale\IConfig
+	 * @since 14.0.0
 	 */
 	public function getGlobalScaleConfig();
 
