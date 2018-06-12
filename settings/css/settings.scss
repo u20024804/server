@@ -1428,6 +1428,11 @@ doesnotexist:-o-prefocus, .strengthify-wrapper {
 				width: 400px;
 				opacity: .7;
 			}
+			.name,
+			.storageLocation {
+				// better multi-line visual
+				line-height: 1em;
+			}
 			&#grid-header,
 			&#new-user {
 				position: sticky;
