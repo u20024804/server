@@ -764,4 +764,12 @@ class CloudFederationProviderFiles implements ICloudFederationProvider {
 	}
 
 
+	/**
+	 * get the supported share types, e.g. "user", "group", etc.
+	 *
+	 * @return array
+	 */
+	public function getSupportedShareTypes() {
+		return ['user'];
+	}
 }
