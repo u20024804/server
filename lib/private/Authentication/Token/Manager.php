@@ -92,6 +92,10 @@ class Manager implements IProvider {
 		$provider->updateTokenActivity($token);
 	}
 
+	/**
+	 * @param string $uid
+	 * @return IToken[]
+	 */
 	public function getTokenByUser(string $uid): array {
 		$old = $this->defaultTokenProvider->getTokenByUser($uid);
 		$new = $this->publicKeyTokenProvider->getTokenByUser($uid);
