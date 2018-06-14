@@ -10,5 +10,11 @@
 // SCSS variables
 $color-main-text: #d8d8d8;
 $color-main-background: #181818;
+
+$color-background-dark: nc-darken($color-main-background, 4%);
+$color-background-darker: nc-darken($color-main-background, 8%);
+
 $color-loading-light: #777;
 $color-loading-dark: #ccc;
+
+$color-box-shadow: rgba(darken($color-main-background, 70%), .5);

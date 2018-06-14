@@ -75,14 +75,15 @@ class AccessibilityController extends Controller {
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(string $appName,
-		IRequest $request,
-		IConfig $config,
-		IUserManager $userManager,
-		ILogger $logger,
-		IURLGenerator $urlGenerator,
-		ITimeFactory $timeFactory,
-		IUserSession $userSession) {
+								IRequest $request,
+								IConfig $config,
+								IUserManager $userManager,
+								ILogger $logger,
+								IURLGenerator $urlGenerator,
+								ITimeFactory $timeFactory,
+								IUserSession $userSession) {
 		parent::__construct($appName, $request);
+		$this->appName      = $appName;
 		$this->config       = $config;
 		$this->userManager  = $userManager;
 		$this->logger       = $logger;
@@ -104,8 +105,9 @@ class AccessibilityController extends Controller {
 
 		$css     = '';
 		$imports = '';
+		$scssFiles = $this->getUserValues();
 
-		foreach ($this->getUserValues() as $scssFile) {
+		foreach ($scssFiles as $scssFile) {
 			if ($scssFile !== false) {
 				$imports .= '@import "' . $scssFile . '";';
 			}
@@ -139,21 +141,25 @@ class AccessibilityController extends Controller {
 
 		$response = new DataDisplayResponse($css, Http::STATUS_OK, ['Content-Type' => 'text/css']);
 
+		// Set cache control
 		$ttl = 31536000;
 		$response->addHeader('Cache-Control', 'max-age=' . $ttl . ', immutable');
-
 		$expires = new \DateTime();
-		$expires->setTimestamp($this->timeFactory->getTime());
+		$now = $this->timeFactory->getTime();
+		$expires->setTimestamp($now);
 		$expires->add(new \DateInterval('PT' . $ttl . 'S'));
 		$response->addHeader('Expires', $expires->format(\DateTime::RFC1123));
 		$response->addHeader('Pragma', 'cache');
+
+		// Update last generation key
+		$this->config->setUserValue($this->userSession->getUser()->getUID(), $this->appName, 'generated', implode('-', $scssFiles));
 
 		return $response;
 	}
 
 	private function getUserValues() {
-		$userTheme = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'accessibility', 'theme', false);
-		$userFont  = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'accessibility', 'font', false);
+		$userTheme = $this->config->getUserValue($this->userSession->getUser()->getUID(), $this->appName, 'theme', false);
+		$userFont  = $this->config->getUserValue($this->userSession->getUser()->getUID(), $this->appName, 'font', false);
 
 		return [
 			'theme' => $userTheme,
